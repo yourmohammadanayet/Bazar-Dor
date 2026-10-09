@@ -42,8 +42,37 @@ textarea {
   outline-offset: 4px;
 }
 
+/* দুই কপি তালিকা একসঙ্গে চলায় স্ক্রলে ফাঁক পড়ে না। */
+.price-ticker-track {
+  display: flex;
+  width: max-content;
+  animation: price-ticker-scroll linear infinite;
+}
+
+.price-ticker-track:hover {
+  animation-play-state: paused;
+}
+
+@keyframes price-ticker-scroll {
+  from {
+    transform: translateX(0);
+  }
+
+  to {
+    transform: translateX(-50%);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  .price-ticker-track {
+    animation: none;
+  }
+
+  section[aria-label="আজকের পণ্যের দাম"] {
+    overflow-x: auto;
   }
 }

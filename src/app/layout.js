@@ -1,5 +1,6 @@
 import { Hind_Siliguri } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
+import PriceTicker from "@/components/layout/PriceTicker";
 import "./globals.css";
 
 const hindSiliguri = Hind_Siliguri({
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
     <html lang="bn" className={hindSiliguri.variable}>
       <body>
         <Navbar />
+        <PriceTicker />
         {children}
       </body>
     </html>
