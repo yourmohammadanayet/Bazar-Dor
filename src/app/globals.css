@@ -1,17 +1,20 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafcfa;
+  color-scheme: light;
+  --background: #f0f5f0;
   --foreground: #1d271f;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-hind-siliguri), sans-serif;
+  --font-sans: var(--font-bengali), sans-serif;
 }
 
 html {
+  min-height: 100%;
+  background: var(--background);
   scroll-behavior: smooth;
 }
 
@@ -42,6 +45,43 @@ textarea {
   outline-offset: 4px;
 }
 
+/* Keep date labels readable without making them heavy. */
+header a[aria-label="বাজার দর হোম পেজ"] > div > span:last-child,
+section[aria-labelledby="hero-heading"] > div > div > span {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+}
+
+header a[aria-label="বাজার দর হোম পেজ"] > div > span:last-child {
+  color: #536357;
+}
+
+/* Soft shadows for the primary buttons. */
+header a[href="/signup"],
+section[aria-labelledby="hero-heading"] a {
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 12%),
+    0 2px 3px rgb(5 137 62 / 18%),
+    0 4px 6px -2px rgb(5 137 62 / 25%);
+}
+
+/* Match the price change colors in the design. */
+#price-risers-heading > span,
+span[aria-label^="দাম বেড়েছে"] {
+  color: #d03739;
+}
+
+#price-fallers-heading > span,
+span[aria-label^="দাম কমেছে"] {
+  color: #05893e;
+}
+
+span[aria-label^="দাম বেড়েছে"],
+span[aria-label^="দাম কমেছে"] {
+  background-color: #f0f5f0;
+}
+
 /* Repeat the list for seamless scrolling. */
 .price-ticker-track {
   display: flex;
@@ -60,6 +100,12 @@ textarea {
 
   to {
     transform: translateX(-50%);
+  }
+}
+
+@media (max-width: 639px) {
+  header a[aria-label="বাজার দর হোম পেজ"] > div > span:last-child {
+    font-size: 11px;
   }
 }
 

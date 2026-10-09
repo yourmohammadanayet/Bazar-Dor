@@ -11,9 +11,12 @@ const categories = [
   { name: "সবজি", slug: "sobji", emoji: "🥬" },
   { name: "মাছ", slug: "mach", emoji: "🐟" },
   { name: "মাংস", slug: "mangsho", emoji: "🍗" },
-  { name: "ডিম-দুধ", slug: "dim-dudh", emoji: "🥛" },
+  { name: "ডিম-দুধ", slug: "dim-dui", emoji: "🥛" },
   { name: "মসলা", slug: "mosla", emoji: "🌶️" },
 ];
+
+const buttonClassName =
+  "inline-flex h-8 w-[76px] shrink-0 items-center justify-center whitespace-nowrap rounded-lg border text-xs font-semibold leading-none transition-colors sm:h-10 sm:w-[96px] sm:text-sm";
 
 export default function Navbar() {
   const pathname = usePathname();
@@ -41,7 +44,7 @@ export default function Navbar() {
   return (
     <header className="border-b border-[#e1e8e1] bg-[#fafcfa] text-[#1d271f]">
       {/* Brand, date, and account links */}
-      <div className="mx-auto flex h-[68px] max-w-[1164px] items-center justify-between gap-2 px-4">
+      <div className="mx-auto flex min-h-[68px] max-w-[1164px] flex-wrap items-center justify-between gap-3 px-4 py-3">
         <Link
           href="/"
           aria-label="বাজার দর হোম পেজ"
@@ -67,14 +70,18 @@ export default function Navbar() {
         <div className="flex shrink-0 items-center gap-2">
           <Link
             href="/signin"
-            className="flex h-8 items-center justify-center rounded-lg border border-[#e1e8e1] px-2.5 text-xs font-medium transition-colors hover:bg-[#eef4ee] sm:h-10 sm:px-4 sm:text-sm"
+            className={`${buttonClassName} border-[#e1e8e1] bg-[#fafcfa] hover:bg-[#eef4ee]`}
           >
             সাইন ইন
           </Link>
 
           <Link
             href="/signup"
-            className="flex h-8 items-center justify-center rounded-lg border border-[#047f39] bg-[#05893e] px-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#047f39] sm:h-10 sm:px-4 sm:text-sm"
+            className={`${buttonClassName} border-[#047f39] bg-[#05893e] text-white hover:bg-[#047f39]`}
+            style={{
+              boxShadow:
+                "inset 0 1px 0 rgba(255, 255, 255, 0.12), 0 3px 2px -2px rgba(5, 137, 62, 0.3), 0 6px 8px -3px rgba(5, 137, 62, 0.3)",
+            }}
           >
             সাইন আপ
           </Link>

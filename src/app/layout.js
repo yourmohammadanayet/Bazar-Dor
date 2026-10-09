@@ -1,12 +1,12 @@
-import { Hind_Siliguri } from "next/font/google";
+import { Noto_Sans_Bengali } from "next/font/google";
 import Navbar from "@/components/layout/Navbar";
 import PriceTicker from "@/components/layout/PriceTicker";
 import "./globals.css";
 
-const hindSiliguri = Hind_Siliguri({
+const bengaliFont = Noto_Sans_Bengali({
   subsets: ["bengali", "latin"],
   weight: ["400", "500", "600", "700"],
-  variable: "--font-hind-siliguri",
+  variable: "--font-bengali",
   display: "swap",
 });
 
@@ -21,7 +21,7 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bn" className={hindSiliguri.variable}>
+    <html lang="bn" className={bengaliFont.variable}>
       <body>
         <Navbar />
         <PriceTicker />
