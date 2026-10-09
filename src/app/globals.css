@@ -1,14 +1,14 @@
 @import "tailwindcss";
 
 :root {
-  --background: #fafaf9;
-  --foreground: #1c1917;
+  --background: #fafcfa;
+  --foreground: #1d271f;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: "Noto Sans Bengali", "Bangla Sangam MN", "Nirmala UI", sans-serif;
+  --font-sans: var(--font-hind-siliguri), sans-serif;
 }
 
 html {

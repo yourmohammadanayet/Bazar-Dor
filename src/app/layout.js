@@ -1,4 +1,13 @@
+import { Hind_Siliguri } from "next/font/google";
+import Navbar from "@/components/layout/Navbar";
 import "./globals.css";
+
+const hindSiliguri = Hind_Siliguri({
+  subsets: ["bengali", "latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-hind-siliguri",
+  display: "swap",
+});
 
 export const metadata = {
   title: {
@@ -11,8 +20,11 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="bn">
-      <body>{children}</body>
+    <html lang="bn" className={hindSiliguri.variable}>
+      <body>
+        <Navbar />
+        {children}
+      </body>
     </html>
   );
 }
