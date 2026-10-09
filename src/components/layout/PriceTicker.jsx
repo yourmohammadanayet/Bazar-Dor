@@ -25,7 +25,7 @@ const percentFormatter = new Intl.NumberFormat("bn-BD", {
 });
 
 async function fetchProducts(signal) {
-  // প্রথম API কাজ না করলে বিকল্পটি ব্যবহার করা হবে।
+  // Use the fallback API if the primary request fails.
   for (const baseUrl of apiUrls) {
     try {
       const response = await fetch(`${baseUrl}/products`, {
@@ -146,7 +146,7 @@ export default function PriceTicker() {
             animationDuration: `${Math.max(products.length * 6, 40)}s`,
           }}
         >
-          {/* একই তালিকার দুই কপি স্ক্রলের ফাঁক দূর করে। */}
+          {/* Repeat the list for seamless scrolling. */}
           {[0, 1].map((copy) => (
             <ul
               key={copy}

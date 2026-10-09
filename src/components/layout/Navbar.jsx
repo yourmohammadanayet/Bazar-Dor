@@ -40,7 +40,7 @@ export default function Navbar() {
 
   return (
     <header className="border-b border-[#e1e8e1] bg-[#fafcfa] text-[#1d271f]">
-      {/* লোগো, তারিখ ও অ্যাকাউন্ট */}
+      {/* Brand, date, and account links */}
       <div className="mx-auto flex h-[68px] max-w-[1164px] items-center justify-between gap-2 px-4">
         <Link
           href="/"
@@ -81,7 +81,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* মোবাইলে ক্যাটাগরিগুলো পাশে স্ক্রল করা যাবে */}
+      {/* Allow horizontal category scrolling on mobile */}
       <div className="border-t border-[#e1e8e1]">
         <nav
           aria-label="পণ্যের ক্যাটাগরি"
