@@ -1,72 +1,35 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { getProducts } from "@/lib/api";
+import {
+  formatNumber,
+  formatPercentage,
+  getUnitName,
+} from "@/lib/format";
 
-const apiUrls = [
-  "https://api.api-store.workers.dev/api/bazardor",
-  "https://api.abcz.workers.dev/api/bazardor",
-];
-
-const units = {
-  kg: "কেজি",
-  liter: "লিটার",
-  litre: "লিটার",
-  l: "লিটার",
-  dozen: "ডজন",
-  piece: "পিস",
-  pcs: "পিস",
+const changeStyles = {
+  up: {
+    symbol: "▲",
+    color: "text-[#d03739]",
+    label: "দাম বেড়েছে",
+  },
+  down: {
+    symbol: "▼",
+    color: "text-[#05893e]",
+    label: "দাম কমেছে",
+  },
+  flat: {
+    symbol: "—",
+    color: "text-[#1d271f]/60",
+    label: "দাম অপরিবর্তিত",
+  },
 };
 
-const priceFormatter = new Intl.NumberFormat("bn-BD");
-
-const percentFormatter = new Intl.NumberFormat("bn-BD", {
-  minimumFractionDigits: 1,
-  maximumFractionDigits: 1,
-});
-
-async function fetchProducts(signal) {
-  // Use the fallback API if the primary request fails.
-  for (const baseUrl of apiUrls) {
-    try {
-      const response = await fetch(`${baseUrl}/products`, {
-        signal: AbortSignal.any([
-          signal,
-          AbortSignal.timeout(10_000),
-        ]),
-      });
-
-      if (!response.ok) {
-        throw new Error("পণ্যের দাম পাওয়া যায়নি।");
-      }
-
-      const products = await response.json();
-
-      if (!Array.isArray(products)) {
-        throw new Error("পণ্যের তথ্য সঠিক নয়।");
-      }
-
-      return products;
-    } catch {
-      if (signal.aborted) {
-        throw new Error("Request cancelled");
-      }
-    }
-  }
-
-  throw new Error("এই মুহূর্তে পণ্যের দাম পাওয়া যাচ্ছে না।");
-}
-
 function TickerItem({ product }) {
-  const direction = product.change?.dir;
-  const symbol =
-    direction === "up" ? "▲" : direction === "down" ? "▼" : "—";
-
-  const changeColor =
-    direction === "up"
-      ? "text-[#05893e]"
-      : direction === "down"
-        ? "text-red-600"
-        : "text-[#1d271f]/60";
+  const change =
+    changeStyles[product.change?.dir] || changeStyles.flat;
+  const percentage = formatPercentage(product.change?.pct ?? 0);
 
   return (
     <li className="flex h-9 shrink-0 items-center gap-1.5 whitespace-nowrap pr-8 text-sm">
@@ -74,13 +37,14 @@ function TickerItem({ product }) {
       <span>{product.nameBn}</span>
 
       <span className="font-semibold">
-        {priceFormatter.format(product.today)} টাকা/
-        {units[product.unit] || product.unit}
+        {formatNumber(product.today)} টাকা/
+        {getUnitName(product.unit)}
       </span>
 
-      <span className={`text-xs font-semibold ${changeColor}`}>
-        {symbol}{" "}
-        {percentFormatter.format(Math.abs(product.change?.pct ?? 0))}%
+      <span className={`text-xs font-semibold ${change.color}`}>
+        <span className="sr-only">{change.label} </span>
+        <span aria-hidden="true">{change.symbol}</span>{" "}
+        {percentage}%
       </span>
     </li>
   );
@@ -96,7 +60,7 @@ export default function PriceTicker() {
 
     async function loadProducts() {
       try {
-        const data = await fetchProducts(controller.signal);
+        const data = await getProducts(controller.signal);
 
         if (!controller.signal.aborted) {
           setProducts(data);
@@ -128,10 +92,12 @@ export default function PriceTicker() {
           className="mx-auto flex h-9 max-w-6xl items-center gap-6 px-4"
         >
           <span className="sr-only">পণ্যের দাম লোড হচ্ছে…</span>
+
           {[1, 2, 3, 4].map((item) => (
             <span
               key={item}
-              className="h-3 w-48 shrink-0 animate-pulse rounded bg-[#e1e8e1]"
+              aria-hidden="true"
+              className="h-3 w-48 shrink-0 rounded bg-[#e1e8e1] motion-safe:animate-pulse"
             />
           ))}
         </div>

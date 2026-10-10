@@ -109,7 +109,7 @@ export default function ProductSections() {
     setRetryCount((count) => count + 1);
   }
 
-  // Rank percentage changes before selecting the top six.
+  // Show the six largest increases and decreases.
   const risers = products
     .filter((product) => product.change?.dir === "up")
     .sort((a, b) => b.change.pct - a.change.pct)
@@ -155,7 +155,7 @@ export default function ProductSections() {
         id="price-risers"
         title="আজ দাম বেড়েছে"
         icon="▲"
-        iconClassName="text-[#05893e]"
+        iconClassName="text-[#d03739]"
         products={risers}
         loading={loading}
         emptyMessage="আজ কোনো পণ্যের দাম বাড়েনি।"
@@ -165,7 +165,7 @@ export default function ProductSections() {
         id="price-fallers"
         title="আজ দাম কমেছে"
         icon="▼"
-        iconClassName="text-[#d03739]"
+        iconClassName="text-[#05893e]"
         products={fallers}
         loading={loading}
         emptyMessage="আজ কোনো পণ্যের দাম কমেনি।"
