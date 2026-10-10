@@ -1,5 +1,5 @@
 import { Noto_Sans_Bengali } from "next/font/google";
-import Navbar from "@/components/layout/Navbar";
+import Navbar from "@/components/layout/NavbarBoundary";
 import PriceTicker from "@/components/layout/PriceTicker";
 import ToastProvider from "@/components/auth/ToastProvider";
 import "./globals.css";
