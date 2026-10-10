@@ -1,6 +1,7 @@
 import { Noto_Sans_Bengali } from "next/font/google";
 import Navbar from "@/components/layout/NavbarBoundary";
 import PriceTicker from "@/components/layout/PriceTicker";
+import Footer from "@/components/layout/Footer";
 import ToastProvider from "@/components/auth/ToastProvider";
 import "./globals.css";
 
@@ -27,10 +28,11 @@ export default function RootLayout({ children }) {
       className={bengaliFont.variable}
       data-scroll-behavior="smooth"
     >
-      <body>
+      <body className="flex min-h-screen flex-col">
         <Navbar />
         <PriceTicker />
-        {children}
+        <div className="flex-1">{children}</div>
+        <Footer />
         <ToastProvider />
       </body>
     </html>
