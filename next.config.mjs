@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 const nextConfig = {
   cacheComponents: true,
   partialPrefetching: true,
+
   turbopack: {
     root: fileURLToPath(new URL(".", import.meta.url)),
     rules: {
@@ -12,6 +13,21 @@ const nextConfig = {
         as: "*.css",
       },
     },
+  },
+
+  async redirects() {
+    return [
+      {
+        source: "/signin",
+        destination: "/sign-in",
+        permanent: false,
+      },
+      {
+        source: "/signup",
+        destination: "/sign-up",
+        permanent: false,
+      },
+    ];
   },
 };
 

@@ -1,8 +1,8 @@
+import Link from "next/link";
 import { Suspense } from "react";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
-import ProfileForm from "@/components/auth/ProfileForm";
 
 export const metadata = {
   title: "আমার প্রোফাইল",
@@ -17,26 +17,51 @@ async function ProfileContent() {
     redirect("/sign-in");
   }
 
+  const name = session.user.name?.trim() || "ব্যবহারকারী";
+  const initial = Array.from(name)[0];
+
   return (
-    <ProfileForm
-      user={{
-        id: session.user.id,
-        name: session.user.name,
-        email: session.user.email,
-      }}
-    />
+    <section
+      aria-label="অ্যাকাউন্টের তথ্য"
+      className="rounded-2xl border border-[#e1e8e1] bg-[#fafcfa] p-6"
+    >
+      <div className="flex flex-wrap items-center gap-4">
+        <span
+          aria-hidden="true"
+          className="flex size-[70px] shrink-0 items-center justify-center rounded-full bg-[#05893e]/10 text-3xl font-semibold text-[#05893e]"
+        >
+          {initial}
+        </span>
+
+        <div className="min-w-0 flex-1">
+          <h2 className="break-words text-xl font-semibold leading-7">
+            {name}
+          </h2>
+          <p className="mt-1 break-all text-sm leading-6 text-[#536357]">
+            {session.user.email}
+          </p>
+        </div>
+      </div>
+
+      <div className="mt-6 border-t border-[#e1e8e1] pt-6">
+        <Link
+          href="/profile/update"
+          className="inline-flex h-10 items-center justify-center rounded-lg bg-[#05893e] px-5 text-sm font-semibold text-white hover:bg-[#047333]"
+        >
+          তথ্য আপডেট করুন
+        </Link>
+      </div>
+    </section>
   );
 }
 
 function ProfileSkeleton() {
   return (
-    <div
-      role="status"
-      aria-label="প্রোফাইল লোড হচ্ছে"
-      className="space-y-6"
-    >
-      <div className="h-28 animate-pulse rounded-2xl bg-[#e1e8e1] motion-reduce:animate-none" />
-      <div className="h-52 animate-pulse rounded-2xl bg-[#e1e8e1] motion-reduce:animate-none" />
+    <div role="status" aria-label="প্রোফাইল লোড হচ্ছে">
+      <div
+        aria-hidden="true"
+        className="h-52 rounded-2xl bg-[#e1e8e1] motion-safe:animate-pulse"
+      />
     </div>
   );
 }
