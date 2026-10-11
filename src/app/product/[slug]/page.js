@@ -11,21 +11,22 @@ export const metadata = {
 };
 
 async function ProductContent({ params }) {
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
-
-  if (!session) {
-    redirect("/sign-in");
-  }
-
   const { slug } = await params;
   const controller = new AbortController();
+
   const products = await getProducts(controller.signal);
   const product = products.find((item) => item.slug === slug);
 
   if (!product) {
     notFound();
+  }
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    redirect("/sign-in?notice=login-required");
   }
 
   return <ProductDetails product={product} />;

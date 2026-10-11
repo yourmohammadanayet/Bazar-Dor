@@ -14,7 +14,7 @@ async function ProfileContent() {
   });
 
   if (!session) {
-    redirect("/sign-in");
+    redirect("/sign-in?notice=login-required");
   }
 
   const name = session.user.name?.trim() || "ব্যবহারকারী";

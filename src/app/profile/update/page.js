@@ -15,7 +15,7 @@ async function UpdateContent() {
   });
 
   if (!session) {
-    redirect("/sign-in");
+    redirect("/sign-in?notice=login-required");
   }
 
   return (
