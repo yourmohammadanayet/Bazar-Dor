@@ -54,6 +54,10 @@ export default function ProductDetails({ product }) {
       )
     : null;
 
+  const marketSummary = markets.length
+    ? `${formatNumber(markets.length)}টি বাজারে প্রতি ${unit} ${formatNumber(minimum)}–${formatNumber(maximum)} টাকা।`
+    : "এই পণ্যের বাজারভিত্তিক দাম এখনও পাওয়া যায়নি।";
+
   const summary = [
     {
       label: "সর্বনিম্ন দাম",
@@ -117,13 +121,26 @@ export default function ProductDetails({ product }) {
           </span>
 
           <div className="min-w-0 flex-1">
-            <h1 className="text-2xl font-bold leading-9 sm:text-3xl">
+            <h1 className="break-words text-2xl font-bold leading-9 sm:text-3xl">
               {product.nameBn}
             </h1>
 
-            <p className="text-sm text-[#536357]">
-              প্রতি {unit} · {product.categoryNameBn}
+            <p className="mt-1 text-sm leading-6 text-[#536357]">
+              {marketSummary}
             </p>
+
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <Link
+                href={`/category/${product.category}`}
+                className="inline-flex items-center rounded-full border border-[#e1e8e1] bg-[#f0f5f0] px-3 py-1 text-xs font-medium text-[#05893e] hover:bg-[#edf5ed]"
+              >
+                {product.categoryNameBn}
+              </Link>
+
+              <span className="text-sm text-[#536357]">
+                প্রতি {unit}
+              </span>
+            </div>
 
             <p className={`mt-2 text-sm ${change.color}`}>
               গতকালের তুলনায় আজ {change.label}
@@ -145,6 +162,7 @@ export default function ProductDetails({ product }) {
             </p>
 
             <p
+              aria-label={`${change.label} ${percentage} শতাংশ`}
               className={`mt-1 inline-flex items-center justify-center gap-1 whitespace-nowrap text-sm font-semibold leading-5 ${change.color}`}
             >
               <span aria-hidden="true">{change.symbol}</span>
@@ -170,12 +188,16 @@ export default function ProductDetails({ product }) {
                 key={item.label}
                 className="rounded-xl border border-[#e1e8e1] bg-[#f0f5f0] px-6 py-4"
               >
-                <dt className="text-sm text-[#536357]">{item.label}</dt>
+                <dt className="text-sm text-[#536357]">
+                  {item.label}
+                </dt>
 
                 <dd className={`mt-1 text-2xl font-bold ${item.color}`}>
                   {item.value === null ? "—" : formatNumber(item.value)}
                   {item.value !== null && (
-                    <span className="ml-1 text-sm font-medium">টাকা</span>
+                    <span className="ml-1 text-sm font-medium">
+                      টাকা
+                    </span>
                   )}
                 </dd>
 
