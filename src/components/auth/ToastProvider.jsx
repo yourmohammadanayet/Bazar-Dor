@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useEffect } from "react";
+import { Suspense, useEffect, useRef } from "react";
 import { usePathname, useSearchParams } from "next/navigation";
 import toast, { Toaster } from "react-hot-toast";
 import { authClient } from "@/lib/auth-client";
@@ -10,6 +10,16 @@ function RouteNotifications() {
   const searchParams = useSearchParams();
   const status = searchParams.get("auth");
   const notice = searchParams.get("notice");
+  const requestId = useRef(0);
+  const mounted = useRef(false);
+
+  useEffect(() => {
+    mounted.current = true;
+
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
   useEffect(() => {
     const requiresLogin = notice === "login-required";
@@ -17,6 +27,7 @@ function RouteNotifications() {
 
     if (!requiresLogin && !hasAuthResult) return;
 
+    const currentRequest = ++requestId.current;
     const url = new URL(window.location.href);
 
     if (requiresLogin) {
@@ -48,13 +59,19 @@ function RouteNotifications() {
 
     if (status !== "success") return;
 
-    let cancelled = false;
+    function isCurrentRequest() {
+      return (
+        mounted.current &&
+        requestId.current === currentRequest &&
+        window.location.pathname === pathname
+      );
+    }
 
     async function showSignInResult() {
       try {
         const { data, error } = await authClient.getSession();
 
-        if (cancelled) return;
+        if (!isCurrentRequest()) return;
 
         if (error || !data) {
           toast.error("সাইন ইন যাচাই করা যায়নি। আবার চেষ্টা করুন।", {
@@ -67,7 +84,7 @@ function RouteNotifications() {
           id: "social-auth-result",
         });
       } catch {
-        if (!cancelled) {
+        if (isCurrentRequest()) {
           toast.error("সংযোগে সমস্যা হয়েছে। আবার চেষ্টা করুন।", {
             id: "social-auth-result",
           });
@@ -76,10 +93,6 @@ function RouteNotifications() {
     }
 
     showSignInResult();
-
-    return () => {
-      cancelled = true;
-    };
   }, [pathname, status, notice]);
 
   return null;
